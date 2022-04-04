@@ -23,6 +23,7 @@ namespace Veterinarios.Models {
       [Required(ErrorMessage = "O {0} é de preenchimento obrigatório.")]
       [StringLength(20, ErrorMessage = "O {0} não pode ter mais do que 20 carateres.")]   
      [Display(Name ="Nome")]
+     [RegularExpression("[A-ZÂÓÍa-záéíóúàèìòùâêîôûãõäëïöüñç '-]+", ErrorMessage ="Só pode escrever letras no {0}")]
       public string Name { get; set; }
 
       /// <summary>
@@ -30,6 +31,7 @@ namespace Veterinarios.Models {
       /// </summary>
       [Required(ErrorMessage = "O {0} é de preenchimento obrigatório.")]
       [StringLength(9, MinimumLength =9 , ErrorMessage = "O {0} tem de ter 9 carateres.")]
+     [RegularExpression("[123578][0-9]{8}",ErrorMessage ="O {0} deve começar por 1,2,3,5,7,8 seguido de 8 digitos numéricos.")]
       public string NIF { get; set; }
 
       /// <summary>
@@ -38,6 +40,7 @@ namespace Veterinarios.Models {
       /// </summary>
       [StringLength(1, ErrorMessage = "O {0} não pode ter mais do que 1 caráter.")]
       [Display(Name = "Sexo")]
+      [RegularExpression("[MmFf]",ErrorMessage ="Só pode usar F, ou M, no campo {0}")]
       public string Sex { get; set; }
 
       /// <summary>
