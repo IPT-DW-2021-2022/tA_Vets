@@ -4,6 +4,9 @@ using Microsoft.EntityFrameworkCore;
 using Veterinarios.Models;
 
 namespace Veterinarios.Data {
+   /// <summary>
+   /// this class connects our project with database
+   /// </summary>
    public class ApplicationDbContext : IdentityDbContext {
       public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
           : base(options) {
