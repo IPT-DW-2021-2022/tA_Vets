@@ -13,17 +13,19 @@ namespace Veterinarios.Models {
       /// <summary>
       /// PK for Vets
       /// </summary>
-      public int Id { get; set; }  
+      public int Id { get; set; }
 
       /// <summary>
       /// Name of vet
       /// </summary>
+      [Required]
       public string Name { get; set; }
 
       /// <summary>
       /// professional license of vet
       /// </summary>
-      [Display(Name ="Professional License")]
+      [Display(Name = "Professional License")]
+      [Required]
       public string ProfessionalLicense { get; set; }
 
       /// <summary>
