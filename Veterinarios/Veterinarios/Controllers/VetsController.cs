@@ -193,10 +193,27 @@ namespace Veterinarios.Controllers {
       // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
       [HttpPost]
       [ValidateAntiForgeryToken]
-      public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ProfessionalLicense,Photo")] Vet vet) {
+      public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ProfessionalLicense,Photo")] Vet vet,
+                                            IFormFile newPhotoVet) {
+
          if (id != vet.Id) {
             return NotFound();
          }
+
+         /* if you do not have a new file, nothing is done
+          * if a new photo is supplied, you should change it
+          *    in this case, the new file takes the older's name?
+          *        or, it will have a new one? in this case, 
+          *        you need to delete the old photo
+          * 
+          * and, if the vet that has a photo, wants to stop using a photo?
+          * ie. the vet wants to use the 'noVet.jpg' photo...
+          *      on the view, ask the user's choice
+          *      and, here, act to do what the user wants
+          */
+
+
+
 
          if (ModelState.IsValid) {
             try {
@@ -235,11 +252,28 @@ namespace Veterinarios.Controllers {
       [HttpPost, ActionName("Delete")]
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> DeleteConfirmed(int id) {
+
          var vet = await _context.Vets.FindAsync(id);
-         _context.Vets.Remove(vet);
-         await _context.SaveChangesAsync();
+
+         try {
+            _context.Vets.Remove(vet);
+            await _context.SaveChangesAsync();
+            /*
+             * you must delete the user's photo
+             * IF the user is not using the 'noVet.jpg'
+             */
+         }
+         catch (Exception) {
+            // what is going to be done in the 'catch' code?
+            //  throw;
+         }
+
          return RedirectToAction(nameof(Index));
+
       }
+
+
+
 
       private bool VetExists(int id) {
          return _context.Vets.Any(e => e.Id == id);
