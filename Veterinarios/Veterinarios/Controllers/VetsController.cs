@@ -178,15 +178,24 @@ namespace Veterinarios.Controllers {
       // GET: Vets/Edit/5
       public async Task<IActionResult> Edit(int? id) {
          if (id == null) {
-            return NotFound();
+            return RedirectToAction("Index");
          }
 
          var vet = await _context.Vets.FindAsync(id);
          if (vet == null) {
-            return NotFound();
+            return RedirectToAction("Index");
          }
+
+         // we are going to create a 'var session' to store the vet's ID
+         // we will use this data to ensure that data does not have been changed by mistake
+         HttpContext.Session.SetInt32("VetID", vet.Id);
+
+
          return View(vet);
       }
+
+
+
 
       // POST: Vets/Edit/5
       // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -195,10 +204,40 @@ namespace Veterinarios.Controllers {
       [ValidateAntiForgeryToken]
       public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ProfessionalLicense,Photo")] Vet vet,
                                             IFormFile newPhotoVet) {
-
          if (id != vet.Id) {
             return NotFound();
          }
+
+         /* before we start editing Vets's data, we need to ensure that data is good
+          * so, we:
+          *    - read the 'session variable'
+          *    - compare it with the data that the browser provided
+          *    - if it is different, we have a problem...
+          */
+         var vetsIDPreviouslyStored = HttpContext.Session.GetInt32("VetID");
+
+         // if the vetsIDPreviouslyStored is null, this means:
+         //    - we are accessing to app's method by external tools
+         //    - we spend more time than allowed
+         if (vetsIDPreviouslyStored == null) {
+            // what we need to do?
+            // we must decide...
+
+            ModelState.AddModelError("", "You have spent more time than allowed...");
+            return View(vet);
+            // return RedirectToAction("Index");
+         }
+
+         if (vetsIDPreviouslyStored != vet.Id) {
+            // if we enter here, something is wrong
+            // what we need to do?????
+
+            return RedirectToAction("Index");
+         }
+
+
+
+
 
          /* if you do not have a new file, nothing is done
           * if a new photo is supplied, you should change it
