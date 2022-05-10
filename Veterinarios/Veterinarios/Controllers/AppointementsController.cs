@@ -20,7 +20,13 @@ namespace Veterinarios.Controllers {
 
       // GET: Appointements
       public async Task<IActionResult> Index() {
-         var applicationDbContext = _context.Appointements.Include(a => a.Animal).Include(a => a.Vet);
+
+
+         var applicationDbContext = _context.Appointements
+                                            .Include(a => a.Animal)
+                                            .Include(a => a.Vet);
+     
+         
          return View(await applicationDbContext.ToListAsync());
       }
 
@@ -31,9 +37,9 @@ namespace Veterinarios.Controllers {
          }
 
          var appointement = await _context.Appointements
-             .Include(a => a.Animal)
-             .Include(a => a.Vet)
-             .FirstOrDefaultAsync(m => m.Id == id);
+                                          .Include(a => a.Animal)
+                                          .Include(a => a.Vet)
+                                          .FirstOrDefaultAsync(m => m.Id == id);
          if (appointement == null) {
             return NotFound();
          }
