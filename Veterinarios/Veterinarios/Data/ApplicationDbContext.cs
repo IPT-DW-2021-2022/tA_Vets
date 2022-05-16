@@ -1,13 +1,39 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+
+using System.ComponentModel.DataAnnotations;
 
 using Veterinarios.Models;
 
 namespace Veterinarios.Data {
+
+   /// <summary>
+   /// class that represents new User data
+   /// </summary>
+   public class ApplicationUser:IdentityUser {
+
+      /// <summary>
+      /// personal name of user to be used at interface
+      /// </summary>
+      [Required]
+      public string Name { get; set; }
+
+      /// <summary>
+      /// registration date
+      /// </summary>
+      [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+      [DataType(DataType.Date)]
+      public DateTime RegistrationDate { get; set; }
+
+
+   }
+
+
    /// <summary>
    /// this class connects our project with database
    /// </summary>
-   public class ApplicationDbContext : IdentityDbContext {
+   public class ApplicationDbContext : IdentityDbContext<ApplicationUser> {
       public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
           : base(options) {
       }
