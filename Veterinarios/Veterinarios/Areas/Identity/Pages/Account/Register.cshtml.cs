@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
 using Veterinarios.Data;
+using Veterinarios.Models;
 
 namespace Veterinarios.Areas.Identity.Pages.Account {
 
@@ -33,18 +34,25 @@ namespace Veterinarios.Areas.Identity.Pages.Account {
       private readonly ILogger<RegisterModel> _logger;
       private readonly IEmailSender _emailSender;
 
+      /// <summary>
+      /// creates a 'connection' to our database
+      /// </summary>
+      private readonly ApplicationDbContext _context;
+
       public RegisterModel(
           UserManager<ApplicationUser> userManager,
           IUserStore<ApplicationUser> userStore,
           SignInManager<ApplicationUser> signInManager,
           ILogger<RegisterModel> logger,
-          IEmailSender emailSender) {
+          IEmailSender emailSender,
+          ApplicationDbContext context) {
          _userManager = userManager;
          _userStore = userStore;
          _emailStore = GetEmailStore();
          _signInManager = signInManager;
          _logger = logger;
          _emailSender = emailSender;
+         _context = context;
       }
 
       /// <summary>
@@ -84,11 +92,16 @@ namespace Veterinarios.Areas.Identity.Pages.Account {
          [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
          public string ConfirmPassword { get; set; }
 
+         ///// <summary>
+         ///// personal user name
+         ///// </summary>
+         //[Required]
+         //public string Name { get; set; }
+
          /// <summary>
-         /// personal user name
+         /// collect the owner's data
          /// </summary>
-         [Required]
-         public string Name { get; set; }
+         public Owner Owner { get; set; }
 
       }
 
@@ -112,23 +125,47 @@ namespace Veterinarios.Areas.Identity.Pages.Account {
 
          returnUrl ??= Url.Content("~/");
 
-         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-     
+         // we are not going to use the external authentication
+         //   ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
          if (ModelState.IsValid) {
             var user = CreateUser();
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-          
+
             // add Name and RegistrationDate to the 'user
-            user.Name = Input.Name;
-            user.RegistrationDate=DateTime.Now;
+            user.Name = Input.Owner.Name;
+            user.RegistrationDate = DateTime.Now;
 
             var result = await _userManager.CreateAsync(user, Input.Password);
 
             if (result.Succeeded) {
                _logger.LogInformation("User created a new account with password.");
 
+               // **********************************************************
+               // save the owner's data
+               // **********************************************************
+               // add data that is missing from owner's data
+               Input.Owner.Email = Input.Email;
+               Input.Owner.UserID = user.Id;
+
+               try {
+                  _context.Add(Input.Owner);
+                  await _context.SaveChangesAsync();
+               }
+               catch (Exception) {
+                  // if I am here, something bad happened
+                  // what I need to do????
+                  // 
+                  // I must do a Rollback to all process
+                  // this mean - delete the user prevously created
+                  await _userManager.DeleteAsync(user);
+                  // create a message to user
+                  ModelState.AddModelError("", "It was impossible to create user. Something wrong happened");
+                  // return control to user
+                  return Page();
+               }
 
                // email validation
                var userId = await _userManager.GetUserIdAsync(user);

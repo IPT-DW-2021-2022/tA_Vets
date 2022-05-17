@@ -46,7 +46,7 @@ namespace Veterinarios.Models {
       /// <summary>
       /// Email
       /// </summary>
-      [EmailAddress(ErrorMessage ="Escreva um {0} válido, pf.")]
+      [EmailAddress(ErrorMessage = "Escreva um {0} válido, pf.")]
       public string Email { get; set; }
 
 
@@ -54,6 +54,13 @@ namespace Veterinarios.Models {
       /// set of owner's animals
       /// </summary>
       public ICollection<Animal> Animals { get; set; }
+
+      //########################################################################
+      /// <summary>
+      /// this FK is used to connect our 'business data' to 'authetication DB'
+      /// </summary>
+      public string UserID { get; set; }
+      //########################################################################
 
    }
 }
