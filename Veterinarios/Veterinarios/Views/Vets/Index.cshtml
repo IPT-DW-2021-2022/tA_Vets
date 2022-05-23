@@ -47,8 +47,8 @@
                         b) using foreach internal variable: vet
                     *@
                     @if (!string.IsNullOrEmpty(vet.Photo)) {
-                        <a href="~/Photos/@vet.Photo" target="_blank">
-                            <img src="~/Photos/@vet.Photo"
+                        <a href="~/Photos/Vets/@vet.Photo" target="_blank">
+                            <img src="~/Photos/Vets/@vet.Photo"
                          alt="photo of vet: @Html.DisplayFor(modelItem => vet.Name)"
                          title="@vet.Name"
                          height="50" />

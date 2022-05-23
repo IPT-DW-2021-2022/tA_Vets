@@ -172,7 +172,7 @@ namespace Veterinarios.Controllers {
             if (newPhotoVet != null) {
                // ask the server what address it wants to use
                string addressToStoreFile = _webHostEnvironment.WebRootPath;
-               string newImageLocalization = Path.Combine(addressToStoreFile, "Photos");
+               string newImageLocalization = Path.Combine(addressToStoreFile, "Photos//Vets");
                // see if the folder 'Photos' exists
                if (!Directory.Exists(newImageLocalization)) {
                   Directory.CreateDirectory(newImageLocalization);
