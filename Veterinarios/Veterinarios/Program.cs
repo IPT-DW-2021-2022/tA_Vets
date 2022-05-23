@@ -15,7 +15,8 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 /* access to Authentication  */
 builder.Services.AddDefaultIdentity<ApplicationUser>(  // builder.Services.AddDefaultIdentity<IdentityUser>(
    options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+   .AddRoles<IdentityRole>() // this is necessary to use 'Roles' in our app 
+   .AddEntityFrameworkStores<ApplicationDbContext>();
 
 /* access to session vars'  */
 builder.Services.AddDistributedMemoryCache();

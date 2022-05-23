@@ -11,7 +11,7 @@ namespace Veterinarios.Data {
    /// <summary>
    /// class that represents new User data
    /// </summary>
-   public class ApplicationUser:IdentityUser {
+   public class ApplicationUser : IdentityUser {
 
       /// <summary>
       /// personal name of user to be used at interface
@@ -50,6 +50,14 @@ namespace Veterinarios.Data {
 
          //*****************************************
          // add, at this point, your new code
+
+         // seed the Roles data
+         modelBuilder.Entity<IdentityRole>().HasData(
+           new IdentityRole { Id = "c", Name = "Client", NormalizedName = "CLIENT" },
+           new IdentityRole { Id = "v", Name = "Veterinary", NormalizedName = "VETERINARY" },
+           new IdentityRole { Id = "a", Name = "Administrative", NormalizedName = "ADMINISTRATIVE" }
+           );
+
 
          // create the seed of your tables
          modelBuilder.Entity<Vet>().HasData(

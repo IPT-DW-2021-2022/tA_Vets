@@ -143,6 +143,10 @@ namespace Veterinarios.Areas.Identity.Pages.Account {
             if (result.Succeeded) {
                _logger.LogInformation("User created a new account with password.");
 
+               // all users registed by this way are 'Clients'
+               await _userManager.AddToRoleAsync(user, "Client");
+
+
                // **********************************************************
                // save the owner's data
                // **********************************************************
