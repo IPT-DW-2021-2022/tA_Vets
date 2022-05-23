@@ -13,7 +13,22 @@ using Veterinarios.Models;
 
 namespace Veterinarios.Controllers {
 
-   [Authorize]
+   /* Use of Roles
+    * 
+    * [Authorize(Roles = "Veterinary")]  --> only users that belongs to this
+    *                                        role can access it
+    * 
+    * [Authorize(Roles = "Veterinary,Administrative")]  --> users that are 'veterinary'
+    *                                                       OR  'administrative' can access it
+    * 
+    * [Authorize(Roles = "Veterinary")]
+    * [Authorize(Roles = "Administrative")]  -->  users MUST have both roles
+    *                                             veterinary AND administrative
+    * 
+    */
+
+
+   [Authorize(Roles = "Veterinary,Administrative")]
    public class VetsController : Controller {
 
 
