@@ -76,8 +76,13 @@ namespace Veterinarios.Controllers {
          // get the User ID
          string userID = _userManager.GetUserId(User);
 
+         /* SELECT *
+          * FROM animals a INNER JOIN owner o ON a.OwnerFK=o.ID
+          * WHERE id= a.ID && o.OwnerFK = userID
+          */
          var animal = await _context.Animals
                                     .Include(a => a.Owner)
+
                                     .Where(m => m.Id == id &&
                                                 m.Owner.UserID == userID)
                                     .FirstOrDefaultAsync();

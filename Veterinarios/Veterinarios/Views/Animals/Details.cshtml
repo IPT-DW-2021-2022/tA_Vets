@@ -16,42 +16,59 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Breed)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Breed)
         </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Species)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Species)
         </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.BirthDate)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.BirthDate)
         </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Weight)
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Weight)
         </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Photo)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Photo)
+          @*  @Html.DisplayFor(model => model.Photo)   *@
+            <img src="~/Photos/Animals/@Model.Photo"
+                 alt="Photo of @Model.Name"
+                 title="@Model.Name"
+                 height="100" />
         </dd>
+
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Owner)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Owner.NIF)
+         @*   @Html.DisplayFor(model => model.Owner.NIF)  *@
+         <b>Owner</b><br />
+         <i>Name: </i> @Model.Owner.Name<br />
+         <i>Email: </i> @Model.Owner.Email<br />
+         <i>NIF: </i> @Model.Owner.NIF<br />
+         <i>Sex: </i> @(Model.Owner.Sex=="F"?"Female":"Male")
+
         </dd>
+
     </dl>
 </div>
 <div>
