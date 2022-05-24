@@ -6,9 +6,12 @@
 
 <h1>Veterinary</h1>
 
-<p>
-    <a asp-action="Create">Add a new vet</a>
-</p>
+@if (User.IsInRole("Veterinary") || User.IsInRole("Administrative")) {
+    <p>
+        <a asp-action="Create">Add a new vet</a>
+    </p>
+}
+
 <table class="table">
     <thead>
         <tr>
@@ -44,24 +47,28 @@
                         b) using foreach internal variable: vet
                     *@
                     @if (!string.IsNullOrEmpty(vet.Photo)) {
-                        <a href="~/Photos/@vet.Photo" target="_blank">
-                            <img src="~/Photos/@vet.Photo"
-                                 alt="photo of vet: @Html.DisplayFor(modelItem => vet.Name)"
-                                 title="@vet.Name"
-                                 height="50" />
+                        <a href="~/Photos/Vets/@vet.Photo" target="_blank">
+                            <img src="~/Photos/Vets/@vet.Photo"
+                         alt="photo of vet: @Html.DisplayFor(modelItem => vet.Name)"
+                         title="@vet.Name"
+                         height="50" />
                         </a>
                     }
                     else {
                         <img src="~/Photos/@vet.Photo"
-                             alt="photo of vet: @Html.DisplayFor(modelItem => vet.Name)"
-                             title="@vet.Name"
-                             height="50" />
+                     alt="photo of vet: @Html.DisplayFor(modelItem => vet.Name)"
+                     title="@vet.Name"
+                     height="50" />
                     }
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@vet.Id">Editar</a> |
-                    <a asp-action="Details" asp-route-id="@vet.Id">Detalhes</a> |
-                    <a asp-action="Delete" asp-route-id="@vet.Id">Apagar</a>
+                    @if (User.IsInRole("Veterinary") || User.IsInRole("Administrative")) {
+                        <text>
+                            <a asp-action="Edit" asp-route-id="@vet.Id">Editar</a> |
+                            <a asp-action="Details" asp-route-id="@vet.Id">Detalhes</a> |
+                            <a asp-action="Delete" asp-route-id="@vet.Id">Apagar</a>
+                        </text>
+                    }
                 </td>
             </tr>
         }

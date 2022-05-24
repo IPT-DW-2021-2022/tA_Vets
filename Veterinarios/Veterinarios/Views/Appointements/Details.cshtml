@@ -26,19 +26,22 @@
             @Html.DisplayNameFor(model => model.Price)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Price)
+            @Html.DisplayFor(model => model.Price) €
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Animal)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Animal.Id)
+            @Html.DisplayFor(model => model.Animal.Name)<br />
+            <img src="~/Animals/@Model.Animal.Photo" alt="" title="@Model.Animal.Name"
+                 height="100" />
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Vet)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Vet.Name)
+            <a asp-controller="vets" asp-action="details" asp-route-id="@Model.VetFK">
+            @Html.DisplayFor(model => model.Vet.Name) </a> - @Model.Vet.ProfessionalLicense
         </dd>
     </dl>
 </div>

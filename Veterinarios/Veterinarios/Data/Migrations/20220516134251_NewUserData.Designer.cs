@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Veterinarios.Data;
 
@@ -11,13 +12,14 @@ using Veterinarios.Data;
 namespace Veterinarios.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220516134251_NewUserData")]
+    partial class NewUserData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.5")
+                .HasAnnotation("ProductVersion", "6.0.4")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -47,29 +49,6 @@ namespace Veterinarios.Data.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = "c",
-                            ConcurrencyStamp = "918858d0-8a26-43a3-adf4-6c3a98e7ac25",
-                            Name = "Client",
-                            NormalizedName = "CLIENT"
-                        },
-                        new
-                        {
-                            Id = "v",
-                            ConcurrencyStamp = "422b2477-f9c4-4c1f-9a94-746e659a471c",
-                            Name = "Veterinary",
-                            NormalizedName = "VETERINARY"
-                        },
-                        new
-                        {
-                            Id = "a",
-                            ConcurrencyStamp = "996a8bbe-ccf9-4aa8-aae9-bee1433cbccc",
-                            Name = "Administrative",
-                            NormalizedName = "ADMINISTRATIVE"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -458,9 +437,6 @@ namespace Veterinarios.Data.Migrations
                     b.Property<string>("Sex")
                         .HasMaxLength(1)
                         .HasColumnType("nvarchar(1)");
-
-                    b.Property<string>("UserID")
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

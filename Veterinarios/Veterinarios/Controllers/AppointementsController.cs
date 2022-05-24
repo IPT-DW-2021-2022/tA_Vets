@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,8 @@ using Veterinarios.Data;
 using Veterinarios.Models;
 
 namespace Veterinarios.Controllers {
+
+   [Authorize]
    public class AppointementsController : Controller {
       private readonly ApplicationDbContext _context;
 
@@ -20,7 +23,13 @@ namespace Veterinarios.Controllers {
 
       // GET: Appointements
       public async Task<IActionResult> Index() {
-         var applicationDbContext = _context.Appointements.Include(a => a.Animal).Include(a => a.Vet);
+
+
+         var applicationDbContext = _context.Appointements
+                                            .Include(a => a.Animal)
+                                            .Include(a => a.Vet);
+     
+         
          return View(await applicationDbContext.ToListAsync());
       }
 
@@ -31,9 +40,9 @@ namespace Veterinarios.Controllers {
          }
 
          var appointement = await _context.Appointements
-             .Include(a => a.Animal)
-             .Include(a => a.Vet)
-             .FirstOrDefaultAsync(m => m.Id == id);
+                                          .Include(a => a.Animal)
+                                          .Include(a => a.Vet)
+                                          .FirstOrDefaultAsync(m => m.Id == id);
          if (appointement == null) {
             return NotFound();
          }

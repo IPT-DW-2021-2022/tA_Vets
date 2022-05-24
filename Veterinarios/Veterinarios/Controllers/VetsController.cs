@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +13,22 @@ using Veterinarios.Models;
 
 namespace Veterinarios.Controllers {
 
+   /* Use of Roles
+    * 
+    * [Authorize(Roles = "Veterinary")]  --> only users that belongs to this
+    *                                        role can access it
+    * 
+    * [Authorize(Roles = "Veterinary,Administrative")]  --> users that are 'veterinary'
+    *                                                       OR  'administrative' can access it
+    * 
+    * [Authorize(Roles = "Veterinary")]
+    * [Authorize(Roles = "Administrative")]  -->  users MUST have both roles
+    *                                             veterinary AND administrative
+    * 
+    */
 
+
+   [Authorize(Roles = "Veterinary,Administrative")]
    public class VetsController : Controller {
 
 
@@ -35,6 +51,7 @@ namespace Veterinarios.Controllers {
 
 
       // GET: Vets
+      [AllowAnonymous]
       public async Task<IActionResult> Index() {
          /* execute the db command
           *    select *
@@ -155,7 +172,7 @@ namespace Veterinarios.Controllers {
             if (newPhotoVet != null) {
                // ask the server what address it wants to use
                string addressToStoreFile = _webHostEnvironment.WebRootPath;
-               string newImageLocalization = Path.Combine(addressToStoreFile, "Photos");
+               string newImageLocalization = Path.Combine(addressToStoreFile, "Photos//Vets");
                // see if the folder 'Photos' exists
                if (!Directory.Exists(newImageLocalization)) {
                   Directory.CreateDirectory(newImageLocalization);
