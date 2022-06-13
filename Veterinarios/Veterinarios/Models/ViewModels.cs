@@ -1,6 +1,20 @@
 namespace Veterinarios.Models {
 
 
+   /// <summary>
+   /// Class to collect owners' data to API
+   /// </summary>
+   public class OwnerViewModel {
+
+      public int Id { get; set; }
+      public string Name { get; set; }
+   }
+
+
+
+   /// <summary>
+   /// this class will collect the data to be sent to API
+   /// </summary>
    public class AnimalViewModel {
       public int Id { get; set; }
       public string Name { get; set; }
