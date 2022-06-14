@@ -25,15 +25,16 @@ namespace Veterinarios.Controllers.API {
       [HttpGet]
       public async Task<ActionResult<IEnumerable<AnimalViewModel>>> GetAnimals() {
          return await _context.Animals
-                              .Include(a=>a.Owner)
+                              .Include(a => a.Owner)
+                              .OrderByDescending(a=>a.Id)
                               .Select(a => new AnimalViewModel {
-                                 Id=a.Id,
-                                 Name=a.Name,
-                                 Breed=a.Breed,
-                                 Specie=a.Species,
-                                 Weight=a.Weight,
-                                 Photo=a.Photo,
-                                 OwnerName=a.Owner.Name
+                                 Id = a.Id,
+                                 Name = a.Name,
+                                 Breed = a.Breed,
+                                 Specie = a.Species,
+                                 Weight = a.Weight,
+                                 Photo = a.Photo,
+                                 OwnerName = a.Owner.Name
                               })
                               .ToListAsync();
       }
@@ -93,15 +94,36 @@ namespace Veterinarios.Controllers.API {
       // POST: api/AnimalsAPI
       // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
       [HttpPost]
-      public async Task<ActionResult<Animal>> PostAnimal(Animal animal) {
+      public async Task<ActionResult<Animal>> PostAnimal([FromForm] Animal animal, IFormFile uploadPhoto) {
+
+         // sem a anotação [FromForm] o ASP .NET não sabe ler os dados
+         // que lhe estão a ser enviados
+
+         /*
+          * Tarefas a executar:
+          *   1. validar os dados recebidos
+          *   2. processar a foto do animal (tal como fizemos com a criação de um Vet)
+          *   3. adicionar TRY-CATCH
+          */
 
 
-         _context.Animals.Add(animal);
+         animal.Photo = "noVet.jpg";
 
-         await _context.SaveChangesAsync();
+
+         // 3.
+         try {
+            _context.Animals.Add(animal);
+            await _context.SaveChangesAsync();
+         }
+         catch (Exception) {
+            // não esquecer, tratar da exceção
+            throw;
+         }
 
          return CreatedAtAction("GetAnimal", new { id = animal.Id }, animal);
       }
+
+
 
 
 
@@ -115,11 +137,22 @@ namespace Veterinarios.Controllers.API {
             return NotFound();
          }
 
+         /*
+          * Não esquecer:
+          * 1. validar se o animal pode ser apagado 
+          *        => problemas com a Integridade Referencial
+          *    se não se puder apagar, decidir o que se vai fazer...
+          * 2. usar um Try-Catch
+          * 3. melhorar a resposta da API
+          */
+
          _context.Animals.Remove(animal);
          await _context.SaveChangesAsync();
 
          return NoContent();
       }
+
+
 
       private bool AnimalExists(int id) {
          return _context.Animals.Any(e => e.Id == id);
